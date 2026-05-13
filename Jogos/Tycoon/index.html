@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+
+<title>TYCOON</title>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <h1>TYCOON</h1>
+  <div style="display:flex;flex-direction:column;align-items:center;">
+    <div id="money-display">$ 0</div>
+    <div id="income-display">Renda: +$ 0 / 5s</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;">
+    <button id="win-voltar">VOLTAR</button>
+  </div>
+
+  <div style="font-size:0.78rem;color:var(--stone);text-align:right;">
+    <div>Tempo: <span id="time-display" style="color:var(--sand-light);">00:00</span></div>
+    <div>Construcoes: <span id="total-builds" style="color:var(--sand-light);">0</span></div>
+  </div>
+</div>
+
+<!-- CITY TABS -->
+<div id="city-tabs"></div>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="city-area">
+    <canvas id="city-canvas"></canvas>
+    <div id="locked-overlay"></div>
+  </div>
+
+  <div id="side-panel">
+    <div id="panel-header">
+      <h2>CONSTRUIR</h2>
+      <p id="panel-city-name">Selecione uma construcao</p>
+    </div>
+    <div id="buildings-list"></div>
+
+  </div>
+</div>
+
+<!-- NOTIFICACAO -->
+<div id="notif"></div>
+
+<!-- WIN SCREEN -->
+<div id="win-screen">
+  <div class="win-stars">&#9733; &#9733; &#9733;</div>
+  <h1>TYCOON COMPLETO!</h1>
+  <div class="win-subtitle">Todas as 5 cidades sustentaveis construidas</div>
+  <div class="win-time" id="win-time-display"></div>
+  <div class="win-cities" id="win-cities-list"></div>
+  <div class="win-message">
+    Voce <strong>transformou Israel</strong> em um modelo mundial de sustentabilidade.<br>
+    Cada painel solar, jardim urbano e turbina de vento que voce construiu<br>
+    contribuiu para um futuro mais verde e limpo para as proximas geracoes.<br><br>
+    <strong>Obrigado por cuidar do nosso planeta.</strong>
+  </div>
+  <button id="win-restart">JOGAR NOVAMENTE</button>
+  <button id="win-voltar">VOLTAR</button>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
