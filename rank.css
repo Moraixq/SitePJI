@@ -1,18 +1,27 @@
+@import url('https://fonts.cdnfonts.com/css/minecraft-4');
+                
+
 * {
     padding: 0;
     margin: 0;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Minecraft, Impact, 'Arial Narrow Bold', sans-serif;
+}
+
+body{
+    background: linear-gradient( rgb(130, 199, 255), rgb(19, 87, 19));
+    background-repeat: no-repeat;
 }
 
 header {
     background-color: rgb(3, 30, 71);
     box-shadow: 0px 3px 0px #464646;
     background-image: url("https://images.stockcake.com/public/5/0/a/50a107ca-5bbf-4e26-a148-77dbed816f7e_large/pixelated-ocean-wave-stockcake.jpg"); 
+    background-size: 20%;
 }
 
 .topo {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 1.5rem 6rem;
     position: relative;
 }
@@ -34,27 +43,47 @@ header {
     text-shadow: none;
 }
 
-.navegar {
+.titulo{
     display: flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: #081b16 1px 1px 4px;
+    color: rgba(107, 246, 124, 0.776);
+    font-size: 2.5rem;
+}
+.titulo:hover{
+    transition: 0.2s;
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+
+
+.div-navegar{
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-.navegar ul {
+.navegar {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    align-content: center;
+    text-decoration: none;
     list-style: none;
 }
 
-.item {
-    margin: 10px;
-}
-
 .link {
+    display: flex;
+    align-items: center;
     text-decoration: none;
     color: rgb(255, 255, 255);
     font-size: 1.15rem;
     font-weight: 400;
-    text-shadow: #464646 3px 2px 2px;
+    text-shadow: #000000 0px 1px 15px;
+    padding-left:40px;
+    align-items: center;
 }
 
 .link:hover {
@@ -65,32 +94,50 @@ header {
 }
 
 
-.btn button {
-    border: none;
-    border-radius: 15px;
-    color: rgb(0, 0, 0);
-    padding: 20px;
+h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: #ffffff 1px 1px 4px;
+    color: rgba(3, 33, 51, 0.776);
+    font-size: 2.5rem;
+}
+
+table{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    border-collapse: separate;
+    border-spacing: 1rem 1rem;
+    font-size: 3rem;
+}
+th{
+    border: 1px solid black;
+    padding: 1rem;
+    background-color: rgb(3, 30, 71);
+    color: rgb(255, 255, 255);
     cursor: pointer;
-    box-shadow: #464646 5px 3px 10px;
+}
+td{
+    border: 1px solid black;
+    padding: 1rem;
+    color: rgb(191, 255, 202);
 }
 
-.btn button a {
-    text-decoration: none;
-    color: black;
-    font-weight: 500;
-    font-size: 1.1rem;
+tr:hover{
+    background-color: rgba(168, 248, 253, 0.301);
+    color: rgb(255, 255, 255);
+    transition: 0.2s;
+    transform: scale(1.05);
 }
 
-ul.jogo {
+footer{
     display: flex;
-    padding: 40px;
-    list-style-type: none;
+    justify-content: center;
     align-items: center;
-    justify-content: space-around;
-}
-
-ul.jogo li {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-shadow: #ffffff 1px 1px 4px;
+    color: rgba(255, 255, 255, 0.776);
+    font-size: 1rem;
+    margin-top: 10rem;
 }

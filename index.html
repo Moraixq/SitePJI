@@ -14,21 +14,36 @@
         <nav class="topo">
             <div class="logo">
                 <a href="index.html" class="link">
-                    <h1>Logo</h1>
+                    <div class="logo-container">
+                        <div class="bear">
+                            <div class="ear left"></div>
+                            <div class="ear right"></div>
+                            <div class="face">
+                                <div class="eye left-eye">
+                                    <div class="pupil"></div>
+                                </div>
+                                <div class="eye right-eye">
+                                    <div class="pupil"></div>
+                                </div>
+                                <div class="muzzle">
+                                    <div class="nose"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </a>
             </div>
-            <div class="navegar">
-                <ul>
-                    <li class="item">
-                        <a href="ranking.html" class="link"> Ranking </a>
-                    </li> 
+            <div class="titulo">
+                <h2>
+                    FriVerde!
+                </h2>
+            </div>
+            <div class="div-navegar">
+                <ul class="navegar">
                     <li class="item">
                         <a href="sobre.html" class="link"> Sobre </a>
                     </li>
                 </ul>
-            </div>
-            <div>
-                <a class="btn" href="login.html">Entrar</a>
             </div>
         </nav>
     </header>
@@ -108,7 +123,7 @@
             </ul>
             <ul class="jogo">
                 <li>
-                    <a href="JogosEcoFactory/ecofactory-city.html" class="link">
+                    <a href="Jogos/EcoFactory/ecofactory-city.html" class="link">
                         <span><img src="Imagens/EcoFactory.png" width="300px" height="200px" class="gameimage"></span>
                         <span>
                             <h3>Eco Factory! </h3>
@@ -152,7 +167,26 @@
             </ul>
         </div>
     </div>
+<script type="text/javascript">
+        const pupils = document.querySelectorAll('.pupil');
 
+        window.addEventListener('mousemove', (e) => {
+            pupils.forEach((pupil) => {
+                const rect = pupil.getBoundingClientRect();
+                const pupilX = rect.left + rect.width / 2;
+                const pupilY = rect.top + rect.height / 2;
+                
+                const angle = Math.atan2(e.clientY - pupilY, e.clientX - pupilX);
+                
+                const distance = 2; 
+            
+                const moveX = Math.round(Math.cos(angle) * distance);
+                const moveY = Math.round(Math.sin(angle) * distance);
+                
+                pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+</script>
 
 </body>
 

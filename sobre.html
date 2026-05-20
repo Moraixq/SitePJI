@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <LINK rel="stylesheet" href="sobre.css">
+    <title>Sobre</title>
+</head>
+<body>
+    <header>
+        <nav class="topo">
+            <div class="logo">
+                <a href="index.html" class="link">
+                    <div class="logo-container">
+                        <div class="bear">
+                            <div class="ear left"></div>
+                            <div class="ear right"></div>
+                            <div class="face">
+                                <div class="eye left-eye">
+                                    <div class="pupil"></div>
+                                </div>
+                                <div class="eye right-eye">
+                                    <div class="pupil"></div>
+                                </div>
+                                <div class="muzzle">
+                                    <div class="nose"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="titulo">
+                <h2>
+                    FriVerde!
+                </h2>
+            </div>
+            <div class="div-navegar">
+                <ul class="navegar">
+                    <li class="item">
+                        <a href="sobre.html" class="link"> Sobre </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="principal">
+        <div class="baloes">
+            <table>
+                <tr>
+                    <td class="participante">
+                        <div class="conteudo-balao">
+                            <img src="Imagens/participantes/Damione.jpg">
+                            <div>
+                                <h4>Filipe Morais</h4>
+                                <h6>Responsavel pelos Jogos e Complementos</h6>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="balao-meio">
+                        <div>
+                            <h4>Integrantes do projeto</h4>
+                        </div>
+                    </td>
+                    <td class="participante">
+                        <div class="conteudo-balao">
+                            <img src="Imagens/participantes/bebe.jpg">
+                            <div>
+                                <h4>Douglas Lopes</h4>
+                                <h6>Responsavel pelo Site</h6>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td class="participante">
+                        <div class="conteudo-balao">
+                                <img src="Imagens/participantes/Damione.jpg">
+                            <div>
+                                <h4>Murilo Fossa</h4>
+                                <h6>Responsavel pelos jogos e complementos</h6>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="participante">
+                        <div class="conteudo-balao">
+                            <img src="Imagens/participantes/Damione.jpg">
+                            <div>
+                                <h4>Pedro H. Mazzer</h4>
+                                <h6>Responsavel pelas Pesquisas</h6>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="participante">
+                        <div class="conteudo-balao">
+                            <img src="Imagens/participantes/Damione.jpg">
+                            <div>
+                                <h4>Guilherme Mourato</h4>
+                                <h6>Responsavel pelos Designs</h6>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+        <script>
+        const pupils = document.querySelectorAll('.pupil');
+
+        window.addEventListener('mousemove', (e) => {
+            pupils.forEach((pupil) => {
+                const rect = pupil.getBoundingClientRect();
+                const pupilX = rect.left + rect.width / 2;
+                const pupilY = rect.top + rect.height / 2;
+                
+                const angle = Math.atan2(e.clientY - pupilY, e.clientX - pupilX);
+                
+                const distance = 2; 
+            
+                const moveX = Math.round(Math.cos(angle) * distance);
+                const moveY = Math.round(Math.sin(angle) * distance);
+                
+                pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+    </script>
+
+</body>
+</html>
