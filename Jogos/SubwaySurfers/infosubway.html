@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUGA DO LIXÃO — Por que este jogo existe?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap');
+
+  :root {
+    --bg: #06091a;
+    --panel: #0b0f22;
+    --border: #1a2550;
+    --blue: #1a6fff;
+    --blue-bright: #4d9fff;
+    --blue-glow: rgba(26,111,255,0.35);
+    --cyan: #00e5ff;
+    --yellow: #ffd700;
+    --orange: #ff8c00;
+    --green: #39ff14;
+    --red: #ff3d5a;
+    --pink: #ff6eb4;
+    --text: #c0d4ff;
+    --dim: #4a5880;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 16px 40px;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(26,111,255,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 20% 80%, rgba(0,229,255,0.05) 0%, transparent 40%);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    width: 100%;
+    max-width: 560px;
+    background: var(--panel);
+    border: 2px solid var(--blue);
+    border-radius: 12px;
+    padding: 28px 22px 22px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 18px;
+    box-shadow: 0 0 30px var(--blue-glow), inset 0 0 40px rgba(26,111,255,0.05);
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 20%; right: 20%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    border-radius: 2px;
+  }
+
+  .bear-emoji {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 12px rgba(255,110,180,0.5));
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+  }
+
+  .game-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 900;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(0,229,255,0.6), 0 0 40px rgba(0,229,255,0.3);
+    margin-bottom: 6px;
+  }
+
+  .game-sub {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--blue-bright);
+    opacity: 0.8;
+    margin-bottom: 14px;
+  }
+
+  .header-desc {
+    font-size: clamp(13px, 2.2vw, 15px);
+    font-style: italic;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  /* ── HUD STRIP (decorativo) ── */
+  .hud-strip {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    gap: 8px;
+  }
+
+  .hud-box {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .hud-box .hud-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 7px;
+    color: var(--blue-bright);
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .hud-box .hud-val {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--yellow);
+  }
+
+  /* ── CARD ── */
+  .card {
+    width: 100%;
+    max-width: 560px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(26,111,255,0.08);
+  }
+
+  .card-header {
+    background: rgba(26,111,255,0.1);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-header .dot {
+    width: 7px; height: 7px;
+    background: var(--cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--cyan);
+    flex-shrink: 0;
+  }
+
+  .card-header span {
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+  }
+
+  /* ── STAT ROWS ── */
+  .stat-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(26,37,80,0.7);
+    transition: background 0.15s;
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row:hover { background: rgba(26,111,255,0.04); }
+
+  .stat-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 32px;
+    text-align: center;
+    margin-top: 1px;
+  }
+
+  .stat-text {
+    font-size: clamp(13px, 2.3vw, 15px);
+    line-height: 1.75;
+    color: var(--text);
+    font-weight: 300;
+  }
+
+  .stat-text .go { color: var(--yellow); font-weight: 600; }
+  .stat-text .cy { color: var(--cyan); }
+  .stat-text .gr { color: var(--green); }
+  .stat-text .re { color: var(--red); font-weight: 600; }
+  .stat-text .or { color: var(--orange); }
+  .stat-text .pk { color: var(--pink); }
+
+  /* ── MISSION ── */
+  .mission-box {
+    width: 100%;
+    max-width: 560px;
+    border: 1px solid var(--blue);
+    border-radius: 10px;
+    padding: 22px 20px;
+    margin-bottom: 26px;
+    position: relative;
+    background: rgba(26,111,255,0.05);
+    box-shadow: 0 0 20px rgba(26,111,255,0.1);
+  }
+
+  .mission-box::before {
+    content: '🐻  MISSÃO DO URSO';
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+
+  .mission-text {
+    font-size: clamp(13px, 2.2vw, 15px);
+    line-height: 1.9;
+    color: var(--text);
+    text-align: center;
+    font-weight: 300;
+  }
+
+  .mission-text strong { color: var(--cyan); font-weight: 600; }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 340px;
+    padding: 15px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(10px, 2vw, 12px);
+    letter-spacing: 2px;
+    font-weight: 700;
+    transition: filter 0.15s, transform 0.08s, box-shadow 0.15s;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  .btn-next {
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 0 4px 0 #0a3a99, 0 0 25px var(--blue-glow);
+  }
+  .btn-next:hover { filter: brightness(1.15); box-shadow: 0 4px 0 #0a3a99, 0 0 40px var(--blue-glow); }
+
+  .btn-back {
+    background: transparent;
+    color: var(--blue-bright);
+    border: 1px solid var(--blue);
+    box-shadow: 0 0 10px rgba(26,111,255,0.15);
+  }
+  .btn-back:hover { background: rgba(26,111,255,0.08); filter: brightness(1.1); }
+
+  /* ── LEGEND STRIP ── */
+  .legend {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 18px;
+    padding: 14px 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 18px;
+  }
+
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    color: var(--dim);
+    letter-spacing: 1px;
+  }
+
+  .leg-dot {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <span class="bear-emoji">🐻</span>
+  <div class="game-title">FUGA DO LIXÃO</div>
+  <div class="game-sub">DESVIE DO LIXO!</div>
+  <p class="header-desc">Por que um urso está fugindo do lixo?<br>Porque o lixo chegou até <em>ele</em> primeiro.</p>
+</div>
+
+<!-- HUD DECORATIVO -->
+<div class="hud-strip">
+  <div class="hud-box">
+    <span class="hud-label">LIXO/ANO</span>
+    <span class="hud-val">80M t</span>
+  </div>
+  <div class="hud-box">
+    <span class="hud-label">RECICLADO</span>
+    <span class="hud-val">4%</span>
+  </div>
+  <div class="hud-box">
+    <span class="hud-label">LIXÕES</span>
+    <span class="hud-val">3.000+</span>
+  </div>
+</div>
+
+<!-- DADOS CARD -->
+<div class="card">
+  <div class="card-header">
+    <span class="dot"></span>
+    <span>A REALIDADE DO LIXO NO BRASIL</span>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🗑️</div>
+    <div class="stat-text">
+      O Brasil produz <span class="re">mais de 80 milhões de toneladas</span> de resíduos sólidos por ano.
+      Desse total, apenas <span class="go">4% é efetivamente reciclado</span> — um dos piores índices
+      entre os países emergentes.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🏚️</div>
+    <div class="stat-text">
+      Existem <span class="re">mais de 3.000 lixões ativos</span> no Brasil, mesmo sendo
+      ilegais desde 2010. Esses locais contaminam o solo, os rios e
+      o ar — e afetam diretamente <span class="or">comunidades e animais selvagens</span>
+      ao redor.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🐻</div>
+    <div class="stat-text">
+      A destruição de habitats por lixo e poluição já levou
+      <span class="re">mais de 1.700 espécies brasileiras</span> à lista de ameaçadas.
+      Ursos-de-mel, onças e outros animais perdem território
+      todo ano por causa do <span class="or">avanço do descarte irregular</span>.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">☠️</div>
+    <div class="stat-text">
+      Resíduos tóxicos — pilhas, eletrônicos, produtos químicos —
+      descartados errado liberam <span class="re">chumbo, mercúrio e cádmio</span>
+      no meio ambiente. Esses metais pesados chegam à
+      <span class="cy">água que bebemos</span> e à <span class="cy">comida que consumimos</span>.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">♻️</div>
+    <div class="stat-text">
+      Se o Brasil atingisse <span class="go">apenas 20% de reciclagem</span>,
+      geraria <span class="gr">mais de 500.000 empregos</span> diretos e reduziria
+      as emissões de gases de efeito estufa em
+      <span class="cy">milhões de toneladas de CO₂</span> por ano.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🌊</div>
+    <div class="stat-text">
+      O Brasil é o <span class="re">4º maior poluidor de plástico nos oceanos</span> do mundo.
+      Mais de <span class="or">330.000 toneladas de plástico</span> chegam ao mar todo ano —
+      afetando peixes, tartarugas e toda a cadeia alimentar marinha.
+    </div>
+  </div>
+</div>
+
+<!-- MISSÃO -->
+<div class="mission-box">
+  <p class="mission-text">
+    Neste jogo, você controla um urso que <strong>não pediu para viver num lixão</strong>.<br><br>
+    Cada obstáculo que você desvia representa um <strong>resíduo real</strong>
+    que não deveria estar na natureza.<br><br>
+    Jogar é simples — <strong>separar o lixo e não jogar no chão</strong> também é.
+    Faça sua parte. 🌿
+  </p>
+</div>
+
+<!-- BOTÕES -->
+<div class="btn-row">
+  <a href="index.html" class="btn btn-next">
+    ▶ &nbsp; CORRER!
+  </a>
+  <a href="../../index.html" class="btn btn-back">
+    ◀ &nbsp; VOLTAR AO SITE
+  </a>
+</div>
+
+<!-- LEGENDA ESTILO JOGO -->
+<div class="legend">
+  <div class="leg-item"><span class="leg-dot" style="background:#888"></span> Lixo</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#e05c3a"></span> Fogo</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#9b59b6"></span> Tóxico</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#ffd700"></span> Turbo</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#39ff14"></span> Limpo</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#4d9fff"></span> Lento</div>
+</div>
+
+</body>
+</html>

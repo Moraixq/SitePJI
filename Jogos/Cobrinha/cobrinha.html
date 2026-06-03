@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Cobrinha - Versão HD com Tutorial</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a252f;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #fff;
+            user-select: none;
+        }
+
+        h1 {
+            margin: 5px 0;
+            color: #2ecc71;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+            font-size: 2.5rem;
+        }
+
+        #painel {
+            display: flex;
+            gap: 30px;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3));
+            padding: 12px 25px;
+            border-radius: 12px;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .destaque {
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        canvas {
+            border: 5px solid #27ae60;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            background-color: #5d6d7e; 
+            transition: background-color 1.2s ease;
+        }
+
+        #controles {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: #a6acaf;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+        }
+
+        /* Telas de sobreposição (Tutorial, Game Over e Vitória) */
+        #overlay {
+            display: flex; /* Começa visível para o Tutorial */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 25, 15, 0.95);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 10;
+            backdrop-filter: blur(6px);
+        }
+
+        #overlay h2 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            color: #2ecc71;
+        }
+
+        #overlay p {
+            font-size: 1.2rem;
+            max-width: 650px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #eaeded;
+        }
+
+        /* Grid do Tutorial */
+        .tutorial-grid {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            justify-content: center;
+        }
+
+        .tutorial-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-positivo { border-color: #2ecc71; }
+        .card-negativo { border-color: #e74c3c; }
+
+        .tutorial-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .preview-box {
+            width: 30px;
+            height: 30px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button {
+            background: linear-gradient(to bottom, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+            transition: 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌱 Eco-Cobrinha 🐍</h1>
+    
+    <div id="painel">
+        <div>Pontos: <span id="txtPontos" class="destaque">0</span></div>
+        <div>Tamanho: <span id="txtTamanho" class="destaque">3</span></div>
+        <div>Meta de Reflorestamento: <span id="txtMeta" style="color:#3498db">50</span></div>
+    </div>
+
+    <canvas id="jogoCanvas" width="600" height="400"></canvas>
+
+    <div id="controles">
+        Use as <b>Setas do Teclado</b> ou as teclas <b>W, A, S, D</b> para guiar a Cobrinha da Natureza.
+    </div>
+
+    <div id="overlay">
+        <h2 id="overlayTitulo">Guia Ecológico de Missão</h2>
+        <div id="tutorialConteudo">
+            <p>Ajude a Eco-Cobrinha a reflorestar o mapa! Conheça o que você encontrará pelo caminho antes de começar:</p>
+            
+            <div class="tutorial-grid">
+                <div class="tutorial-card card-positivo">
+                    <h3 style="color: #2ecc71; margin-top:0;">COLETE ✔️</h3>
+                    <div class="tutorial-item">
+                        <div class="preview-box">🌱</div>
+                        <div><b>Sementes:</b> Fazem você crescer e dão +2 pontos.</div>
+                    </div>
+                    <div class="tutorial-item">
+                        <div class="preview-box">♻️</div>
+                        <div><b>Recicláveis:</b> Item raro! Limpa o ambiente e dá +10 pontos.</div>
+                    </div>
+                </div>
+
+                <div class="tutorial-card card-negativo">
+                    <h3 style="color: #e74c3c; margin-top:0;">EVITE ❌</h3>
+                    <div class="tutorial-item">
+                        <div class="preview-box" style="font-size:0.8rem;">🗑️</div>
+                        <div><b>Lixo Comum:</b> Sacolas, latas e garrafas reduzem seu tamanho e tiram pontos!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p id="overlayTexto" style="display:none;"></p>
+        <button id="btnAcao" onclick="iniciarJogo()">Começar Missão</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("jogoCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Elementos do DOM
+        const txtPontos = document.getElementById("txtPontos");
+        const txtTamanho = document.getElementById("txtTamanho");
+        const overlay = document.getElementById("overlay");
+        const overlayTitulo = document.getElementById("overlayTitulo");
+        const overlayTexto = document.getElementById("overlayTexto");
+        const tutorialConteudo = document.getElementById("tutorialConteudo");
+        const btnAcao = document.getElementById("btnAcao");
+
+        // Configurações do Grid
+        const TAM_QUADRADO = 20;
+        const LINHAS = canvas.height / TAM_QUADRADO;
+        const COLUNAS = canvas.width / TAM_QUADRADO;
+
+        // Estado do Jogo
+        let cobrinha = [];
+        let direcao = 'DIREITA';
+        let proximaDirecao = 'DIREITA';
+        let pontos = 0;
+        let loopJogo = null;
+        let velocidade = 120; 
+        const META_PONTOS = 50;
+
+        // Itens
+        let semente = {x: 0, y: 0};
+        let lixos = [];
+        let reciclavel = null;
+        let elementosNatureza = [];
+
+        function iniciarJogo() {
+            // Esconde elementos do tutorial e prepara tela
+            tutorialConteudo.style.display = "none";
+            overlayTexto.style.display = "none";
+            overlay.style.display = "none";
+
+            // Reseta variáveis básicas de forma segura
+            cobrinha = [
+                {x: 5, y: 10},
+                {x: 4, y: 10},
+                {x: 3, y: 10}
+            ];
+            direcao = 'DIREITA';
+            proximaDirecao = 'DIREITA';
+            pontos = 0;
+            lixos = [];
+            reciclavel = null;
+            elementosNatureza = [];
+            
+            atualizarInterface();
+            gerarSemente();
+            gerarLixo();
+            
+            if(loopJogo) clearInterval(loopJogo);
+            loopJogo = setInterval(atualizar, velocidade);
+        }
+
+        function gerarSemente() {
+            semente.x = Math.floor(Math.random() * COLUNAS);
+            semente.y = Math.floor(Math.random() * LINHAS);
+            if (cobrinha.some(p => p.x === semente.x && p.y === semente.y)) {
+                gerarSemente();
+            }
+        }
+
+        function gerarLixo() {
+            while(lixos.length < 4) {
+                let novoLixo = {
+                    x: Math.floor(Math.random() * COLUNAS),
+                    y: Math.floor(Math.random() * LINHAS),
+                    tipo: ['sacola', 'lata', 'garrafa'][Math.floor(Math.random() * 3)]
+                };
+                // Não deixa nascer em cima da cobrinha ou da semente existente
+                if (!cobrinha.some(p => p.x === novoLixo.x && p.y === novoLixo.y) && novoLixo.x !== semente.x) {
+                    lixos.push(novoLixo);
+                }
+            }
+        }
+
+        function gerarReciclavel() {
+            if (Math.random() < 0.4 && !reciclavel) { 
+                reciclavel = {
+                    x: Math.floor(Math.random() * COLUNAS),
+                    y: Math.floor(Math.random() * LINHAS)
+                };
+            }
+        }
+
+        function adicionarNatureza() {
+            elementosNatureza.push({
+                x: Math.floor(Math.random() * COLUNAS) * TAM_QUADRADO + TAM_QUADRADO/2,
+                y: Math.floor(Math.random() * LINHAS) * TAM_QUADRADO + TAM_QUADRADO/2,
+                tipo: Math.random() > 0.4 ? 'flor' : 'grama',
+                cor: ['#ff5e7e', '#f1c40f', '#ca6f1e', '#bb8fce', '#5dade2'][Math.floor(Math.random() * 5)],
+                tamanho: Math.random() * 3 + 2
+            });
+        }
+
+        function atualizarInterface() {
+            txtPontos.innerText = pontos;
+            txtTamanho.innerText = cobrinha.length;
+
+            let progresso = Math.min(pontos / META_PONTOS, 1);
+            let r = Math.floor(93 - (93 - 25) * progresso);
+            let g = Math.floor(109 + (111 - 109) * progresso);
+            let b = Math.floor(126 - (126 - 61) * progresso);
+            canvas.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        }
+
+        window.addEventListener("keydown", e => {
+            switch(e.key) {
+                case "ArrowUp":    case "w": case "W": if(direcao !== 'BAIXO') proximaDirecao = 'CIMA'; break;
+                case "ArrowDown":  case "s": case "S": if(direcao !== 'CIMA') proximaDirecao = 'BAIXO'; break;
+                case "ArrowLeft":  case "a": case "A": if(direcao !== 'DIREITA') proximaDirecao = 'ESQUERDA'; break;
+                case "ArrowRight": case "d": case "D": if(direcao !== 'ESQUERDA') proximaDirecao = 'DIREITA'; break;
+            }
+        });
+
+        function atualizar() {
+            direcao = proximaDirecao;
+
+            let cabecaX = cobrinha[0].x;
+            let cabecaY = cobrinha[0].y;
+
+            if (direcao === 'DIREITA') cabecaX++;
+            if (direcao === 'ESQUERDA') cabecaX--;
+            if (direcao === 'CIMA') cabecaY--;
+            if (direcao === 'BAIXO') cabecaY++;
+
+            // Portais nas bordas da tela
+            if (cabecaX >= COLUNAS) cabecaX = 0;
+            if (cabecaX < 0) cabecaX = COLUNAS - 1;
+            if (cabecaY >= LINHAS) cabecaY = 0;
+            if (cabecaY < 0) cabecaY = LINHAS - 1;
+
+            const novaCabeca = {x: cabecaX, y: cabecaY};
+
+            // Condição de Derrota 1: Auto-colisão
+            if (cobrinha.some(p => p.x === novaCabeca.x && p.y === novaCabeca.y)) {
+                fimDeJogo(false, "Ops! A Eco-Cobrinha acabou se chocando com os próprios ramos. Tente manter o controle da sua rota ecológica!");
+                return;
+            }
+
+            cobrinha.unshift(novaCabeca);
+
+            // Verificação de Interação com Itens
+            if (novaCabeca.x === semente.x && novaCabeca.y === semente.y) {
+                pontos += 2;
+                for(let i=0; i<2; i++) adicionarNatureza();
+                gerarSemente();
+                gerarReciclavel();
+            } 
+            else if (reciclavel && novaCabeca.x === reciclavel.x && novaCabeca.y === reciclavel.y) {
+                pontos += 10;
+                reciclavel = null;
+                for(let i=0; i<6; i++) adicionarNatureza(); 
+            }
+            else if (lixos.some(l => l.x === novaCabeca.x && l.y === novaCabeca.y)) {
+                // Remove o lixo coletado
+                lixos = lixos.filter(l => !(l.x === novaCabeca.x && l.y === novaCabeca.y));
+                
+                // Penalidade
+                pontos = Math.max(0, pontos - 4);
+                
+                // CONSERTO DO BUG: Remove os gomos de forma segura controlando o tamanho do array
+                // Remove o gomo normal do passo atual + 2 gomos extras por punição da poluição
+                let gomosParaRemover = 3; 
+                while(gomosParaRemover > 0 && cobrinha.length > 0) {
+                    cobrinha.pop();
+                    gomosParaRemover--;
+                }
+                
+                gerarLixo();
+
+                // Condição de Derrota 2: Menor que o tamanho mínimo de sobrevivência (2 gomos)
+                if (cobrinha.length < 2) {
+                    fimDeJogo(false, "A poluição enfraqueceu demais a Eco-Cobrinha! O acúmulo de lixo plástico e descartes incorretos sufocou a natureza.");
+                    return;
+                }
+            } 
+            else {
+                // Movimento padrão: retira o último bloco para manter tamanho estável
+                cobrinha.pop();
+            }
+
+            // Condição de Vitória
+            if (pontos >= META_PONTOS) {
+                fimDeJogo(true, "Assim como neste jogo, pequenas atitudes podem transformar o mundo real. Cuidar do planeta começa com ações simples.");
+                return;
+            }
+
+            atualizarInterface();
+            desenhar();
+        }
+
+        // ==========================================
+        // RENDERIZAÇÃO DOS GRÁFICOS VETORIAIS (CANVAS)
+        // ==========================================
+        function desenhar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Elementos da natureza que retornaram
+            elementosNatureza.forEach(el => {
+                ctx.save();
+                if(el.tipo === 'flor') {
+                    ctx.fillStyle = el.cor;
+                    for (let i = 0; i < 5; i++) {
+                        ctx.beginPath();
+                        let angulo = (i * 2 * Math.PI) / 5;
+                        let px = el.x + Math.cos(angulo) * el.tamanho;
+                        let py = el.y + Math.sin(angulo) * el.tamanho;
+                        ctx.arc(px, py, el.tamanho * 0.8, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.fillStyle = '#f39c12';
+                    ctx.beginPath();
+                    ctx.arc(el.x, el.y, el.tamanho * 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.strokeStyle = '#27ae60';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(el.x, el.y + 5);
+                    ctx.lineTo(el.x - 3, el.y - el.tamanho);
+                    ctx.moveTo(el.x, el.y + 5);
+                    ctx.lineTo(el.x, el.y - el.tamanho - 2);
+                    ctx.moveTo(el.x, el.y + 5);
+                    ctx.lineTo(el.x + 3, el.y - el.tamanho);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            });
+
+            // 2. Desenho das Ameaças (Lixos)
+            lixos.forEach(lixo => {
+                ctx.save();
+                let lx = lixo.x * TAM_QUADRADO + TAM_QUADRADO/2;
+                let ly = lixo.y * TAM_QUADRADO + TAM_QUADRADO/2;
+
+                ctx.fillStyle = "rgba(120, 120, 120, 0.15)";
+                ctx.beginPath();
+                ctx.arc(lx, ly, TAM_QUADRADO*0.8, 0, Math.PI*2);
+                ctx.fill();
+
+                if (lixo.tipo === 'garrafa') {
+                    ctx.fillStyle = '#a6b6a6'; 
+                    ctx.fillRect(lx - 4, ly - 2, 8, 10);
+                    ctx.fillRect(lx - 2, ly - 7, 4, 5); 
+                    ctx.fillStyle = '#e74c3c'; 
+                    ctx.fillRect(lx - 2, ly - 9, 4, 2);
+                } else if (lixo.tipo === 'lata') {
+                    ctx.fillStyle = '#7f8c8d'; 
+                    ctx.beginPath();
+                    ctx.ellipse(lx, ly, 6, 8, Math.PI / 6, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#d35400';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(lx, ly, 4, 0, Math.PI);
+                    ctx.stroke();
+                } else { 
+                    ctx.fillStyle = '#d5dbdb';
+                    ctx.beginPath();
+                    ctx.moveTo(lx - 7, ly + 5);
+                    ctx.lineTo(lx - 5, ly - 5);
+                    ctx.lineTo(lx, ly - 8);
+                    ctx.lineTo(lx + 5, ly - 5);
+                    ctx.lineTo(lx + 7, ly + 5);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                ctx.restore();
+            });
+
+            // 3. Desenho do Item Reciclável (Brilhante)
+            if (reciclavel) {
+                ctx.save();
+                let rx = reciclavel.x * TAM_QUADRADO + TAM_QUADRADO/2;
+                let ry = reciclavel.y * TAM_QUADRADO + TAM_QUADRADO/2;
+
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "#3498db";
+                ctx.fillStyle = "#2980b9";
+                ctx.beginPath();
+                ctx.arc(rx, ry, TAM_QUADRADO/2 - 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.strokeStyle = "#fff";
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(rx, ry - 4);
+                ctx.lineTo(rx + 4, ry + 4);
+                ctx.lineTo(rx - 4, ry + 4);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // 4. Desenho da Semente Reluzente
+            ctx.save();
+            let sx = semente.x * TAM_QUADRADO + TAM_QUADRADO/2;
+            let sy = semente.y * TAM_QUADRADO + TAM_QUADRADO/2;
+            
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = "#f1c40f";
+            ctx.fillStyle = "#d35400";
+            ctx.beginPath();
+            ctx.ellipse(sx, sy + 2, 4, 6, Math.PI / 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = "#2ecc71";
+            ctx.beginPath();
+            ctx.ellipse(sx - 2, sy - 4, 2, 4, -Math.PI / 4, 0, Math.PI * 2);
+            ctx.ellipse(sx + 2, sy - 4, 2, 4, Math.PI / 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // 5. Desenho da Cobrinha (Cipó Orgânico)
+            cobrinha.forEach((ponto, index) => {
+                ctx.save();
+                let cx = ponto.x * TAM_QUADRADO + TAM_QUADRADO/2;
+                let cy = ponto.y * TAM_QUADRADO + TAM_QUADRADO/2;
+                let isCabeca = index === 0;
+
+                if (isCabeca) {
+                    ctx.fillStyle = "#196f3d";
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, TAM_QUADRADO/2, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = "#fff";
+                    let ox1 = 0, oy1 = 0, ox2 = 0, oy2 = 0;
+                    if (direcao === 'DIREITA') { ox1 = 3; oy1 = -4; ox2 = 3; oy2 = 4; }
+                    if (direcao === 'ESQUERDA'){ ox1 = -3; oy1 = -4; ox2 = -3; oy2 = 4; }
+                    if (direcao === 'CIMA')    { ox1 = -4; oy1 = -3; ox2 = 4; oy2 = -3; }
+                    if (direcao === 'BAIXO')   { ox1 = -4; oy1 = 3; ox2 = 4; oy2 = 3; }
+
+                    ctx.beginPath();
+                    ctx.arc(cx + ox1, cy + oy1, 3, 0, Math.PI*2);
+                    ctx.arc(cx + ox2, cy + oy2, 3, 0, Math.PI*2);
+                    ctx.fill();
+                    
+                    ctx.fillStyle = "#000";
+                    ctx.beginPath();
+                    ctx.arc(cx + ox1, cy + oy1, 1.5, 0, Math.PI*2);
+                    ctx.arc(cx + ox2, cy + oy2, 1.5, 0, Math.PI*2);
+                    ctx.fill();
+                } else {
+                    let gradiente = ctx.createRadialGradient(cx, cy, 2, cx, cy, TAM_QUADRADO/2);
+                    gradiente.addColorStop(0, '#2ecc71');
+                    gradiente.addColorStop(1, '#229954');
+                    ctx.fillStyle = gradiente;
+                    
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, TAM_QUADRADO/2 - 1, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (index % 2 === 0) {
+                        ctx.fillStyle = "#27ae60";
+                        ctx.beginPath();
+                        ctx.ellipse(cx - 6, cy, 2, 4, Math.PI/4, 0, Math.PI*2);
+                        ctx.ellipse(cx + 6, cy, 2, 4, -Math.PI/4, 0, Math.PI*2);
+                        ctx.fill();
+                    }
+
+                    if (index % 3 === 0) {
+                        ctx.fillStyle = "#e74c3c"; 
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, 2.5, 0, Math.PI*2);
+                        ctx.fill();
+                    }
+                }
+                ctx.restore();
+            });
+        }
+
+        function fimDeJogo(vitoria, mensagem) {
+            clearInterval(loopJogo);
+            
+            // Reajusta a interface de sobreposição para o modo Fim/Vitória
+            tutorialConteudo.style.display = "none";
+            overlayTexto.style.display = "block";
+            
+            overlayTitulo.innerText = vitoria ? "🌍 Planeta Salvo!" : "💥 Fim de Jogo";
+            overlayTitulo.style.color = vitoria ? "#2ecc71" : "#e74c3c";
+            overlayTexto.innerText = mensagem;
+            btnAcao.innerText = "Jogar Novamente";
+            
+            overlay.style.display = "flex";
+        }
+    </script>
+</body>
+</html>

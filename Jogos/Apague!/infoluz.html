@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APAGUE! — Por que este jogo existe?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --panel: #0f1520;
+    --border: #1e2d40;
+    --yellow: #f5c518;
+    --orange: #ff6b00;
+    --green: #4caf50;
+    --cyan: #00e5ff;
+    --red: #ff3b3b;
+    --text: #c8d8e8;
+    --dim: #607080;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 40px;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(0,229,255,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(245,197,24,0.05) 0%, transparent 60%);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    width: 100%;
+    max-width: 720px;
+    background: #050810;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 24px 24px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+    animation: scanline 3s linear infinite;
+  }
+
+  @keyframes scanline {
+    0%   { opacity: 0.3; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.3; }
+  }
+
+  .mode-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--yellow);
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+    display: block;
+    opacity: 0.85;
+  }
+
+  .bulbs {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 14px;
+  }
+
+  .bulb {
+    width: 10px;
+    height: 28px;
+    background: var(--yellow);
+    border-radius: 2px;
+    box-shadow: 0 0 8px var(--yellow);
+    animation: flicker 2s ease-in-out infinite;
+  }
+  .bulb:nth-child(2) { animation-delay: 0.4s; }
+  .bulb:nth-child(3) { animation-delay: 0.8s; }
+
+  @keyframes flicker {
+    0%,100% { opacity: 1; box-shadow: 0 0 8px var(--yellow); }
+    50%      { opacity: 0.6; box-shadow: 0 0 3px var(--yellow); }
+  }
+
+  .title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(22px, 5vw, 32px);
+    color: var(--yellow);
+    text-shadow: 0 0 20px rgba(245,197,24,0.5), 3px 3px 0 #7a5c00;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(9px, 2vw, 11px);
+    color: var(--yellow);
+    opacity: 0.85;
+    letter-spacing: 1px;
+    line-height: 1.8;
+  }
+
+  /* ── INTRO CARD ── */
+  .card {
+    width: 100%;
+    max-width: 720px;
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: #0a0e1a;
+    border-bottom: 2px solid var(--border);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-header .pixel-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--yellow);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .card-header span {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--yellow);
+    letter-spacing: 2px;
+  }
+
+  /* ── STAT ROWS ── */
+  .stat-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row:hover { background: rgba(245,197,24,0.03); }
+
+  .stat-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 34px;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  .stat-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(12px, 2.2vw, 14px);
+    line-height: 1.75;
+    color: var(--text);
+  }
+
+  .stat-text .hi { color: var(--orange); font-weight: bold; }
+  .stat-text .yi { color: var(--yellow); }
+  .stat-text .ci { color: var(--cyan); }
+  .stat-text .ri { color: var(--red); }
+  .stat-text .gi { color: var(--green); }
+
+  /* ── MISSION BOX ── */
+  .mission-box {
+    width: 100%;
+    max-width: 720px;
+    border: 2px solid var(--yellow);
+    border-radius: 4px;
+    padding: 22px 20px;
+    margin-bottom: 28px;
+    position: relative;
+    background: rgba(245,197,24,0.04);
+  }
+
+  .mission-box::before {
+    content: '⚡ MISSÃO';
+    position: absolute;
+    top: -12px;
+    left: 16px;
+    background: var(--bg);
+    padding: 0 10px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--yellow);
+    letter-spacing: 2px;
+  }
+
+  .mission-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(12px, 2.2vw, 14px);
+    line-height: 1.9;
+    color: var(--text);
+    text-align: center;
+  }
+
+  .mission-text strong {
+    color: var(--yellow);
+    font-weight: normal;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 360px;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(10px, 2vw, 12px);
+    letter-spacing: 1px;
+    transition: transform 0.08s, filter 0.1s;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  .btn-next {
+    background: var(--green);
+    color: #fff;
+    box-shadow: 0 4px 0 #2a6b2a, 0 0 20px rgba(76,175,80,0.3);
+  }
+  .btn-next:hover { filter: brightness(1.1); box-shadow: 0 4px 0 #2a6b2a, 0 0 30px rgba(76,175,80,0.5); }
+
+  .btn-back {
+    background: #1a2a3a;
+    color: var(--cyan);
+    border: 2px solid var(--cyan);
+    box-shadow: 0 4px 0 #0a1520, 0 0 12px rgba(0,229,255,0.15);
+  }
+  .btn-back:hover { filter: brightness(1.1); background: rgba(0,229,255,0.08); }
+
+  /* pixel arrows */
+  .arrow { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <span class="mode-badge">🌙 &nbsp; P O R &nbsp; Q U E &nbsp; E S T E &nbsp; J O G O ?</span>
+  <div class="bulbs">
+    <div class="bulb"></div>
+    <div class="bulb"></div>
+    <div class="bulb"></div>
+  </div>
+  <div class="title">⚡ APAGUE! ⚡</div>
+  <div class="subtitle">Economizar energia ajuda o mundo!</div>
+</div>
+
+<!-- DADOS CARD -->
+<div class="card">
+  <div class="card-header">
+    <span class="pixel-dot"></span>
+    <span>A REALIDADE DO BRASIL</span>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">⚡</div>
+    <div class="stat-text">
+      O Brasil <span class="hi">desperdiça cerca de 30%</span> de toda a energia elétrica que produz — o equivalente a deixar
+      <span class="yi">mais de 30 usinas de Itaipu</span> ligadas sem necessidade. São bilhões de reais jogados fora todo ano.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">💡</div>
+    <div class="stat-text">
+      Iluminação representa em média <span class="hi">19% do consumo elétrico</span> das residências brasileiras.
+      Apagar a luz ao sair de um cômodo pode reduzir a conta de luz em <span class="yi">até R$ 50 por mês</span> em uma casa comum.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🌎</div>
+    <div class="stat-text">
+      Cada kWh de energia economizada evita a emissão de <span class="ci">~0,09 kg de CO₂</span> na atmosfera.
+      Se cada brasileiro apagasse apenas <span class="yi">uma lâmpada a mais por dia</span>, poderíamos cortar
+      <span class="hi">milhões de toneladas</span> de gases de efeito estufa por ano.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🏠</div>
+    <div class="stat-text">
+      Segundo a <span class="ci">ANEEL e o Procel</span>, o consumo residencial cresceu <span class="hi">mais de 40%</span>
+      na última década no Brasil — impulsionado pelo maior uso de eletrônicos e ar-condicionado.
+      Pequenos hábitos fazem diferença real.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">👧</div>
+    <div class="stat-text">
+      A conscientização começa cedo: crianças e jovens que aprendem <span class="gi">bons hábitos de consumo</span>
+      têm <span class="yi">3x mais chance</span> de manter essas práticas na vida adulta — e de influenciar
+      toda a família ao redor.
+    </div>
+  </div>
+</div>
+
+<!-- MISSÃO -->
+<div class="mission-box">
+  <p class="mission-text">
+    Este jogo foi criado para <strong>transformar conscientização em ação</strong>.<br><br>
+    Cada vez que você clica para apagar uma luz aqui, você pratica um gesto que,
+    repetido no mundo real, <strong>poupa energia, reduz custos e protege o planeta</strong>.<br><br>
+    Jogar é divertido — <strong>economizar energia também pode ser</strong>. ⚡
+  </p>
+</div>
+
+<!-- BOTÕES -->
+<div class="btn-row">
+  <a href="luz.html" class="btn btn-next">
+    <span class="arrow">▶</span> JOGAR AGORA
+  </a>
+  <a href="../../index.html" class="btn btn-back">
+    <span class="arrow">◀</span> VOLTAR AO SITE
+  </a>
+</div>
+
+</body>
+</html>

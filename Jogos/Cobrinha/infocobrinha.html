@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eco-Cobrinha — O Jogo do Planeta</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-deep: #1a3d0e;
+    --green-mid: #2d6b10;
+    --green-light: #4caf50;
+    --green-bright: #a8f080;
+    --green-pale: #c8f0a0;
+    --cream: #f4f0e6;
+    --bark: #5c3d1e;
+    --bark-light: #8d6e63;
+    --text-dark: #1a2e10;
+    --text-body: #2c4a1e;
+    --leaf-shadow: rgba(26,61,14,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: #0f2008;
+    font-family: 'Lora', Georgia, serif;
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(76,175,80,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 80%, rgba(45,107,16,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(26,61,14,0.3) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Floating leaves */
+  .leaf-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .leaf-bg span {
+    position: absolute;
+    font-size: 1.4rem;
+    opacity: 0.12;
+    animation: floatLeaf linear infinite;
+  }
+  @keyframes floatLeaf {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.12; }
+    90%  { opacity: 0.08; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 48px 28px 60px;
+  }
+
+  /* Header badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(168,240,128,0.1);
+    border: 1px solid rgba(168,240,128,0.25);
+    border-radius: 40px;
+    padding: 6px 16px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+    margin-bottom: 28px;
+    animation: fadeSlideDown 0.7s ease both;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.12;
+    color: var(--green-pale);
+    margin-bottom: 10px;
+    animation: fadeSlideDown 0.8s 0.1s ease both;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--green-bright);
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    color: rgba(200,240,160,0.65);
+    font-style: italic;
+    margin-bottom: 44px;
+    animation: fadeSlideDown 0.8s 0.2s ease both;
+  }
+
+  /* Divider */
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green-bright), transparent);
+    margin-bottom: 36px;
+    border-radius: 2px;
+    animation: fadeSlideDown 0.8s 0.3s ease both;
+  }
+
+  /* Text body */
+  .article {
+    animation: fadeSlideDown 0.9s 0.35s ease both;
+  }
+
+  .article p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: rgba(230,245,210,0.88);
+    margin-bottom: 24px;
+  }
+
+  .article p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--green-bright);
+    float: left;
+    line-height: 0.82;
+    margin-right: 8px;
+    margin-top: 6px;
+  }
+
+  .article strong {
+    color: var(--green-pale);
+    font-weight: 500;
+  }
+
+  .highlight-box {
+    border-left: 3px solid var(--green-bright);
+    background: rgba(168,240,128,0.06);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 22px;
+    margin: 28px 0;
+    font-style: italic;
+    color: var(--green-pale);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  /* Stat pills */
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 28px 0 32px;
+  }
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(168,240,128,0.08);
+    border: 1px solid rgba(168,240,128,0.2);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    color: rgba(200,240,160,0.9);
+    line-height: 1.4;
+  }
+  .stat-pill .icon { font-size: 1.3rem; }
+  .stat-pill b { color: var(--green-bright); display: block; font-size: 1rem; }
+
+  /* Buttons */
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 48px;
+    animation: fadeSlideDown 0.9s 0.5s ease both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #3d8a18 0%, #2d6b10 100%);
+    color: var(--green-pale);
+    border: 1px solid rgba(168,240,128,0.35);
+    border-radius: 50px;
+    padding: 16px 44px;
+    font-family: 'Lora', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 24px rgba(76,175,80,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+    border-radius: inherit;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(76,175,80,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+    border-color: rgba(168,240,128,0.55);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: rgba(200,240,160,0.55);
+    border: 1px solid rgba(168,240,128,0.15);
+    border-radius: 50px;
+    padding: 11px 32px;
+    font-family: 'Lora', serif;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .btn-back:hover {
+    color: rgba(200,240,160,0.85);
+    border-color: rgba(168,240,128,0.35);
+    background: rgba(168,240,128,0.05);
+  }
+
+  /* Footer note */
+  .footer-note {
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: rgba(168,240,128,0.3);
+    text-align: center;
+    font-style: italic;
+    letter-spacing: 0.04em;
+  }
+
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 500px) {
+    .stats { flex-direction: column; }
+    .btn-primary { width: 100%; justify-content: center; }
+    .btn-back { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating leaves -->
+<div class="leaf-bg" id="leaves"></div>
+
+<div class="wrapper">
+  <div class="badge">🌿 Conscientização ambiental</div>
+
+  <h1>Eco-Cobrinha<br>e o <em>Planeta</em> Brasileiro</h1>
+  <p class="subtitle">Como um jogo simples reflete desafios reais da natureza no Brasil</p>
+  <div class="divider"></div>
+
+  <div class="article">
+    <p>
+      O Brasil abriga alguns dos ecossistemas mais ricos do planeta — a Amazônia, o Cerrado, a Mata Atlântica, o Pantanal — mas enfrenta desafios sérios de poluição, desmatamento e descarte irregular de resíduos. A <strong>Eco-Cobrinha</strong> traduz essa realidade em linguagem lúdica e acessível.
+    </p>
+
+    <div class="stats">
+      <div class="stat-pill"><span class="icon">🌳</span><div><b>+80%</b> da Mata Atlântica já destruída</div></div>
+      <div class="stat-pill"><span class="icon">🗑️</span><div><b>80 mi ton.</b> de resíduos sólidos/ano</div></div>
+      <div class="stat-pill"><span class="icon">♻️</span><div><b>menos de 4%</b> é reciclado no país</div></div>
+    </div>
+
+    <p>
+      Cada elemento do jogo tem um paralelo direto com o mundo real. As <strong>folhas e sementes</strong> coletadas representam o reflorestamento e a regeneração natural, práticas essenciais para recuperar os mais de 80% da Mata Atlântica já destruídos. Os <strong>itens de reciclagem</strong> refletem um sistema ainda em desenvolvimento no país: o Brasil gera cerca de 80 milhões de toneladas de resíduos sólidos por ano, mas recicla menos de 4% desse total.
+    </p>
+
+    <p>
+      O <strong>lixo espalhado pelo cenário</strong> — sacolas, latas, garrafas — ilustra um problema concreto: milhares de toneladas de resíduos chegam anualmente aos rios brasileiros, afetando a fauna aquática e comprometendo mananciais que abastecem milhões de pessoas.
+    </p>
+
+    <div class="highlight-box">
+      "A poluição enfraquece a natureza, enquanto pequenas ações positivas a fortalecem — flores que surgem, animais que retornam. Essa progressão espelha o que acontece em áreas de preservação reais quando o ambiente é cuidado."
+    </div>
+
+    <p>
+      Mais do que entretenimento, o jogo funciona como ferramenta de conscientização. Ao gamificar conceitos como coleta seletiva, impacto do lixo e recuperação de ecossistemas, a <strong>Eco-Cobrinha</strong> planta a semente mais importante: a de que o comportamento individual importa — e que um <strong>Brasil mais verde</strong> começa nas escolhas do dia a dia.
+    </p>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn-primary" href="cobrinha.html">
+      🐍 Começar jogo
+    </a>
+    <a class="btn-back" href="/../../index.html">
+      ← Voltar
+    </a>
+    <p class="footer-note">Cuidar do planeta começa com ações simples.</p>
+  </div>
+</div>
+
+<script>
+  // Generate floating leaves
+  const container = document.getElementById('leaves');
+  const emojis = ['🌿','🍃','🌱','🍂','🌾','🌼','🌸'];
+  for (let i = 0; i < 18; i++) {
+    const el = document.createElement('span');
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (14 + Math.random() * 18) + 's';
+    el.style.animationDelay = (Math.random() * 20) + 's';
+    el.style.fontSize = (1 + Math.random() * 1.2) + 'rem';
+    container.appendChild(el);
+  }
+</script>
+</body>
+</html>

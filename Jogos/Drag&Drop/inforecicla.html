@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vida Sustentável — Por que este jogo existe?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap');
+
+  :root {
+    --grad-top: #7b2ff7;
+    --grad-mid: #c0295a;
+    --grad-bot: #e03a3a;
+    --teal: #00d4b8;
+    --white: #ffffff;
+    --card-bg: rgba(255,255,255,0.12);
+    --card-border: rgba(255,255,255,0.22);
+    --text: rgba(255,255,255,0.92);
+    --dim: rgba(255,255,255,0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 18px 48px;
+    background: linear-gradient(160deg, var(--grad-top) 0%, var(--grad-mid) 55%, var(--grad-bot) 100%);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 26px;
+  }
+
+  .recycle-icon {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 14px rgba(0,212,184,0.7));
+    animation: spin-slow 8s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .game-title {
+    font-size: clamp(34px, 8vw, 52px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    margin-bottom: 10px;
+  }
+
+  .header-desc {
+    font-size: clamp(14px, 3vw, 17px);
+    color: var(--dim);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ── CARD ── */
+  .card {
+    width: 100%;
+    max-width: 560px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-header .dot {
+    width: 8px; height: 8px;
+    background: var(--teal);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--teal);
+    flex-shrink: 0;
+  }
+
+  .card-header span {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--teal);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── STAT ROWS ── */
+  .stat-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.15s;
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row:hover { background: rgba(255,255,255,0.05); }
+
+  .stat-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 30px;
+    text-align: center;
+    margin-top: 1px;
+  }
+
+  .stat-text {
+    font-size: clamp(13px, 2.4vw, 15px);
+    line-height: 1.75;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .stat-text .hi { color: #ffd166; font-weight: 700; }
+  .stat-text .te { color: var(--teal); font-weight: 600; }
+  .stat-text .wh { color: #fff; font-weight: 600; }
+  .stat-text .re { color: #ff8fa3; font-weight: 700; }
+  .stat-text .gr { color: #b5ead7; font-weight: 600; }
+
+  /* ── MISSION ── */
+  .mission-box {
+    width: 100%;
+    max-width: 560px;
+    background: var(--card-bg);
+    border: 1px solid var(--teal);
+    border-radius: 20px;
+    padding: 24px 20px;
+    margin-bottom: 28px;
+    position: relative;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 20px rgba(0,212,184,0.15);
+  }
+
+  .mission-box::before {
+    content: '♻️ POR QUE SEPARAR?';
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #b52d5a;
+    padding: 2px 14px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .mission-text {
+    font-size: clamp(13px, 2.4vw, 15px);
+    line-height: 1.9;
+    color: var(--text);
+    text-align: center;
+  }
+
+  .mission-text strong { color: var(--teal); }
+
+  /* ── INFO BOX (regras) ── */
+  .info-box {
+    width: 100%;
+    max-width: 560px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 24px;
+    backdrop-filter: blur(6px);
+  }
+
+  .info-item {
+    font-size: 13px;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .info-item span { color: var(--white); font-weight: 700; }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 320px;
+    padding: 16px 28px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(15px, 3vw, 17px);
+    font-weight: 800;
+    transition: filter 0.15s, transform 0.08s;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    letter-spacing: 0.5px;
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  .btn-next {
+    background: #e03a3a;
+    color: #fff;
+    box-shadow: 0 5px 0 #962020, 0 8px 20px rgba(224,58,58,0.4);
+  }
+  .btn-next:hover { filter: brightness(1.1); }
+
+  .btn-back {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.35);
+  }
+  .btn-back:hover { background: rgba(255,255,255,0.22); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <span class="recycle-icon">♻️</span>
+  <div class="game-title">Vida<br>Sustentável</div>
+  <p class="header-desc">Separe o lixo. Salve o planeta. 🌱<br><br>Mas por que isso importa tanto?</p>
+</div>
+
+<!-- DADOS CARD -->
+<div class="card">
+  <div class="card-header">
+    <span class="dot"></span>
+    <span>A realidade do lixo no Brasil</span>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🗑️</div>
+    <div class="stat-text">
+      O Brasil gera <span class="re">mais de 80 milhões de toneladas</span> de lixo por ano.
+      São quase <span class="hi">220.000 toneladas por dia</span> — e boa parte disso vai para
+      locais errados por falta de separação correta.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">😔</div>
+    <div class="stat-text">
+      Apenas <span class="re">4% do lixo brasileiro</span> é reciclado. A média dos
+      países desenvolvidos é <span class="te">acima de 30%</span>. A diferença começa
+      em casa, na hora de separar o que é orgânico, plástico, vidro ou papel.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">💧</div>
+    <div class="stat-text">
+      Lixo orgânico misturado com recicláveis contamina o material e
+      <span class="re">inviabiliza a reciclagem</span>. Um simples papel molhado de resto de
+      comida pode inutilizar <span class="hi">um saco inteiro</span> de recicláveis.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">👷</div>
+    <div class="stat-text">
+      O Brasil tem <span class="te">mais de 800.000 catadores</span> que dependem da
+      reciclagem para sobreviver. Separar bem o lixo em casa
+      <span class="wh">gera renda e dignidade</span> para milhares de famílias.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🌍</div>
+    <div class="stat-text">
+      Reciclar 1 tonelada de alumínio economiza energia suficiente para
+      <span class="hi">abastecer uma casa por 70 dias</span>. Reciclar papel salva
+      <span class="te">17 árvores</span> e reduz o consumo de água em 50%.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🏫</div>
+    <div class="stat-text">
+      Países com <span class="gr">educação ambiental nas escolas</span> têm taxas de
+      reciclagem até <span class="hi">5x maiores</span> em uma geração. Aprender
+      a separar cedo muda hábitos para sempre — e influencia a família inteira.
+    </div>
+  </div>
+</div>
+
+<!-- MISSÃO -->
+<div class="mission-box">
+  <p class="mission-text">
+    Neste jogo você pratica o que pode fazer <strong>agora mesmo no mundo real</strong>.<br><br>
+    Cada item arrastado para a lixeira certa é um gesto que,
+    repetido em casa, <strong>reduz o lixo, gera empregos e protege o planeta</strong>.<br><br>
+    <strong>Separar lixo é um superpoder.</strong> ♻️
+  </p>
+</div>
+
+<!-- INFO REGRAS -->
+<div class="info-box">
+  <div class="info-item">❤️ <span>3 vidas</span></div>
+  <div class="info-item">⏱️ <span>2 minutos</span></div>
+  <div class="info-item">🖱️ Arraste para a lixeira certa</div>
+  <div class="info-item">❌ Erro = perde 1 vida</div>
+</div>
+
+<!-- BOTÕES -->
+<div class="btn-row">
+  <a href="index.html" class="btn btn-next">▶ &nbsp; Jogar</a>
+  <a href="../../index.html" class="btn btn-back">◀ &nbsp; Voltar ao Site</a>
+</div>
+
+</body>
+</html>

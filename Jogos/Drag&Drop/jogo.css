@@ -58,6 +58,21 @@ body {
   transition: transform 0.15s, box-shadow 0.15s;
 }
 .btn-start:hover { transform: scale(1.06); box-shadow: 0 10px 40px rgba(255,71,87,0.7); }
+
+.btn-voltar{
+  background: linear-gradient(135deg, #ffbcbc, #ff7a85);
+  color: #fff;
+  border: none;
+  padding: 1rem 3rem;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.6rem;
+  border-radius: 60px;
+  cursor: pointer;
+  box-shadow: 0 6px 30px rgba(141, 96, 100, 0.5);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-voltar:hover { transform: scale(1.06); box-shadow: 0 10px 40px rgba(255,71,87,0.7); }
+
 .rules-box {
   margin-top: 2rem;
   background: rgba(255,255,255,0.1);

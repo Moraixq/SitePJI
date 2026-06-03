@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TYCOON — Por que este jogo existe?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --bg: #0d0a05;
+    --panel: #131008;
+    --border: #3a2e10;
+    --gold: #c8a84b;
+    --gold-bright: #f0cc6a;
+    --gold-dim: #7a6020;
+    --teal: #00bfa5;
+    --sky: #4db8d4;
+    --green: #6abf4b;
+    --red: #e05c3a;
+    --text: #d4c498;
+    --dim: #7a6a44;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Text', Georgia, serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 16px 48px;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(200,168,75,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(0,191,165,0.04) 0%, transparent 50%);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    width: 100%;
+    max-width: 760px;
+    background: #08070302;
+    border: 2px solid var(--border);
+    border-top: 3px solid var(--gold);
+    border-radius: 2px;
+    padding: 30px 28px 24px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 22px;
+    background: linear-gradient(180deg, #1a1308 0%, #0d0a05 100%);
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  }
+
+  .logo-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+
+  .logo-line .divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim));
+  }
+  .logo-line .divider.r {
+    background: linear-gradient(90deg, var(--gold-dim), transparent);
+  }
+
+  .game-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 6vw, 42px);
+    font-weight: 700;
+    color: var(--gold-bright);
+    letter-spacing: 8px;
+    text-shadow: 0 0 30px rgba(200,168,75,0.4), 0 2px 4px rgba(0,0,0,0.8);
+  }
+
+  .sub-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: block;
+  }
+
+  .header-desc {
+    font-size: clamp(15px, 2.5vw, 17px);
+    font-style: italic;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  /* ── CARD ── */
+  .card {
+    width: 100%;
+    max-width: 760px;
+    background: linear-gradient(180deg, #131008 0%, #0f0c06 100%);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: #1a1408;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-header .gem {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    box-shadow: 0 0 6px var(--gold);
+  }
+
+  .card-header span {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 3px;
+  }
+
+  /* ── STAT ROWS ── */
+  .stat-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(58,46,16,0.5);
+    transition: background 0.2s;
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row:hover { background: rgba(200,168,75,0.03); }
+
+  .stat-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    width: 36px;
+    text-align: center;
+    margin-top: 1px;
+    filter: drop-shadow(0 0 4px rgba(200,168,75,0.3));
+  }
+
+  .stat-text {
+    font-size: clamp(14px, 2.3vw, 16px);
+    line-height: 1.75;
+    color: var(--text);
+  }
+
+  .stat-text .go { color: var(--gold-bright); font-weight: 600; }
+  .stat-text .te { color: var(--teal); }
+  .stat-text .sk { color: var(--sky); }
+  .stat-text .gr { color: var(--green); }
+  .stat-text .re { color: var(--red); }
+  .stat-text .di { color: var(--dim); font-style: italic; }
+
+  /* ── MISSION ── */
+  .mission-box {
+    width: 100%;
+    max-width: 760px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 2px;
+    padding: 26px 24px;
+    margin-bottom: 30px;
+    position: relative;
+    background: rgba(200,168,75,0.03);
+  }
+
+  .mission-box::before {
+    content: '◆  MISSÃO DO TYCOON  ◆';
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    padding: 0 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    white-space: nowrap;
+  }
+
+  .mission-text {
+    font-size: clamp(14px, 2.3vw, 16px);
+    line-height: 1.9;
+    color: var(--text);
+    text-align: center;
+    font-style: italic;
+  }
+
+  .mission-text strong { color: var(--gold-bright); font-style: normal; }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 380px;
+    padding: 15px 28px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: clamp(11px, 2vw, 13px);
+    letter-spacing: 2px;
+    transition: filter 0.15s, transform 0.08s;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  .btn-next {
+    background: linear-gradient(180deg, #c8a84b 0%, #a07c28 100%);
+    color: #0d0a05;
+    font-weight: 700;
+    box-shadow: 0 3px 0 #5a4010, 0 0 20px rgba(200,168,75,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .btn-next:hover { filter: brightness(1.1); }
+
+  .btn-back {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    box-shadow: 0 0 10px rgba(200,168,75,0.08);
+  }
+  .btn-back:hover { background: rgba(200,168,75,0.06); filter: brightness(1.1); }
+
+  .btn-icon { font-size: 12px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <span class="sub-badge">Simulador de Cidades Sustentáveis</span>
+  <div class="logo-line">
+    <span class="divider"></span>
+    <div class="game-title">TYCOON</div>
+    <span class="divider r"></span>
+  </div>
+  <p class="header-desc">Por que construir cidades mais inteligentes e verdes?</p>
+</div>
+
+<!-- DADOS CARD -->
+<div class="card">
+  <div class="card-header">
+    <span class="gem"></span>
+    <span>A REALIDADE DAS NOSSAS CIDADES</span>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🏙️</div>
+    <div class="stat-text">
+      As cidades consomem <span class="go">mais de 75% de toda a energia</span> produzida no mundo,
+      mas ocupam apenas 3% da superfície terrestre. Planejar bem o espaço urbano
+      é a <span class="te">decisão mais impactante</span> para o futuro do planeta.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">☀️</div>
+    <div class="stat-text">
+      O Brasil tem <span class="go">um dos maiores potenciais solares do mundo</span> — com irradiação
+      média de <span class="sk">5,5 kWh/m² por dia</span>. Ainda assim, apenas 4% das residências
+      possuem painéis solares. Cada painel instalado pode gerar
+      <span class="te">economia de até R$ 200/mês</span> na conta de luz.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🌳</div>
+    <div class="stat-text">
+      Árvores em áreas urbanas reduzem a temperatura local em até <span class="go">8°C</span>,
+      diminuem o consumo de ar-condicionado em <span class="gr">30%</span> e aumentam
+      o bem-estar dos moradores. Cidades com mais verde têm
+      <span class="te">moradores mais saudáveis e produtivos</span>.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">🚌</div>
+    <div class="stat-text">
+      O transporte urbano responde por <span class="go">27% das emissões de CO₂</span> no Brasil.
+      Ônibus elétricos emitem <span class="gr">até 90% menos poluentes</span> que os a diesel
+      e custam <span class="te">60% menos para operar</span> por km rodado — um investimento que se paga.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">💨</div>
+    <div class="stat-text">
+      A energia eólica já responde por <span class="go">mais de 12% da matriz elétrica brasileira</span>
+      — e o Brasil é o <span class="sk">5º maior produtor de energia eólica do mundo</span>.
+      Uma turbina moderna abastece até <span class="te">500 famílias</span> por ano.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-icon">📈</div>
+    <div class="stat-text">
+      Cidades que investem em infraestrutura verde têm <span class="go">PIB até 15% maior</span>
+      em 10 anos, segundo o Banco Mundial. Sustentabilidade não é custo —
+      é <span class="te">a melhor estratégia econômica</span> de longo prazo.
+    </div>
+  </div>
+</div>
+
+<!-- MISSÃO -->
+<div class="mission-box">
+  <p class="mission-text">
+    Neste jogo, você é o <strong>arquiteto do futuro urbano</strong>.<br><br>
+    Cada construção que você escolhe, cada investimento que faz,
+    reflete <strong>decisões reais</strong> que governos e cidadãos enfrentam hoje.<br><br>
+    Construa cidades <strong>prósperas, verdes e inteligentes</strong> —
+    e descubra que o crescimento econômico e a sustentabilidade
+    <strong>caminham juntos</strong>. 🌿
+  </p>
+</div>
+
+<!-- BOTÕES -->
+<div class="btn-row">
+  <a href="index.html" class="btn btn-next">
+    <span class="btn-icon">▶</span> JOGAR AGORA
+  </a>
+  <a href="../../index.html" class="btn btn-back">
+    <span class="btn-icon">◀</span> VOLTAR AO SITE
+  </a>
+</div>
+
+</body>
+</html>

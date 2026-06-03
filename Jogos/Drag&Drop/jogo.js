@@ -637,6 +637,9 @@ function startGame() {
   spawnNextItem();
   startTimer();
 }
+function voltar(){
+  window.history.back();
+}
 
 function showScreen(id) {
   ['startScreen', 'gameScreen', 'gameOverScreen'].forEach(s => {

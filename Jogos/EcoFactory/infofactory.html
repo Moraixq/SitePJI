@@ -1,0 +1,373 @@
+EcoFactory:
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌱 EcoFactory City — Sobre o Jogo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --eco: #4ade80;
+    --eco-dark: #16a34a;
+    --eco-light: #bbf7d0;
+    --money: #fbbf24;
+    --money-dark: #d97706;
+    --panel: rgba(255,255,255,0.92);
+    --shadow: 0 4px 24px rgba(0,0,0,0.10);
+    --radius: 18px;
+    --font-head: 'Fredoka One', cursive;
+    --font-body: 'Nunito', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: #bae6fd;
+    min-height: 100vh;
+    overflow-x: hidden;
+    user-select: none;
+  }
+
+  /* ===== BG ===== */
+  #city-scene {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(180deg, #bae6fd 0%, #86efac 100%);
+    overflow: hidden;
+  }
+
+  .cloud {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    opacity: 0.65;
+    animation: drift linear infinite;
+  }
+  @keyframes drift { from{transform:translateX(-200px)} to{transform:translateX(110vw)} }
+
+  .tree-deco {
+    position: absolute;
+    bottom: 0;
+    font-size: 2.8em;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));
+    animation: treeSway 4s ease-in-out infinite;
+  }
+  @keyframes treeSway {
+    0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)}
+  }
+
+  .city-building {
+    position: absolute;
+    bottom: 0;
+    border-radius: 4px 4px 0 0;
+    background: #7dd3fc;
+  }
+
+  /* ===== WRAPPER ===== */
+  #wrapper {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding: 24px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* ===== HEADER ===== */
+  #hero {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: 28px 28px 22px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    width: 100%;
+  }
+
+  #hero .hero-icon {
+    font-size: 4em;
+    display: block;
+    margin-bottom: 8px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}
+  }
+
+  #hero h1 {
+    font-family: var(--font-head);
+    font-size: 2.2em;
+    color: var(--eco-dark);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  #hero .tagline {
+    color: #6b7280;
+    font-size: 0.97em;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  /* ===== STAT PILLS ROW ===== */
+  .pills-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--panel);
+    border-radius: 30px;
+    padding: 8px 16px;
+    font-weight: 800;
+    font-size: 0.88em;
+    box-shadow: var(--shadow);
+    border: 2px solid var(--eco-light);
+    color: var(--eco-dark);
+  }
+  .pill.money-pill { background: #fffbeb; border-color: #fde68a; color: var(--money-dark); }
+  .pill.blue-pill  { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+
+  /* ===== ARTICLE CARD ===== */
+  #article {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: 28px 28px;
+    box-shadow: var(--shadow);
+    width: 100%;
+  }
+
+  #article h2 {
+    font-family: var(--font-head);
+    font-size: 1.25em;
+    color: var(--eco-dark);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #article p {
+    color: #374151;
+    font-size: 0.95em;
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+  #article p:last-of-type { margin-bottom: 0; }
+
+  #article strong {
+    color: var(--eco-dark);
+    font-weight: 800;
+  }
+
+  .highlight-box {
+    background: #f0fdf4;
+    border-left: 4px solid var(--eco);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 16px;
+    margin: 16px 0;
+    color: #166534;
+    font-size: 0.92em;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+
+  .stat-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fef9c3;
+    border-radius: 8px;
+    padding: 1px 8px;
+    font-weight: 800;
+    color: #92400e;
+    font-size: 0.9em;
+  }
+
+  /* ===== DIVIDER ===== */
+  .divider {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--eco-light), transparent);
+    border-radius: 2px;
+    margin: 4px 0;
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: var(--radius);
+    font-family: var(--font-head);
+    font-size: 1.3em;
+    cursor: pointer;
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+    color: white;
+    box-shadow: 0 6px 0 #15803d, var(--shadow);
+    letter-spacing: 1px;
+    transition: transform 0.1s, box-shadow 0.1s;
+    text-align: center;
+    text-decoration: none;
+  }
+  .btn-primary:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #15803d;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+  }
+
+  .btn-back {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #d1d5db;
+    border-radius: var(--radius);
+    font-family: var(--font-head);
+    font-size: 1.1em;
+    cursor: pointer;
+    background: var(--panel);
+    color: #374151;
+    box-shadow: var(--shadow);
+    letter-spacing: 0.5px;
+    transition: all 0.18s;
+    text-align: center;
+    text-decoration: none;
+  }
+  .btn-back:hover {
+    border-color: var(--eco);
+    color: var(--eco-dark);
+    background: #f0fdf4;
+  }
+
+  .buttons-col {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer-note {
+    color: #9ca3af;
+    font-size: 0.78em;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  @media(max-width:480px) {
+    #hero h1 { font-size: 1.7em; }
+    #article { padding: 20px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="city-scene"></div>
+
+<div id="wrapper">
+
+  <!-- HERO -->
+  <div id="hero">
+    <span class="hero-icon">🌱</span>
+    <h1>EcoFactory City</h1>
+    <p class="tagline">Um jogo tycoon sobre sustentabilidade, escolhas e o futuro das cidades brasileiras.</p>
+  </div>
+
+  <!-- PILLS -->
+  <div class="pills-row">
+    <div class="pill">🌿 Sustentabilidade</div>
+    <div class="pill money-pill">💰 Estratégia</div>
+    <div class="pill blue-pill">🏙️ Gestão de Cidade</div>
+    <div class="pill">♻️ Reciclagem</div>
+  </div>
+
+  <!-- ARTICLE -->
+  <div id="article">
+    <h2>🇧🇷 Como esse jogo ajuda o meio ambiente?</h2>
+
+    <p>O Brasil enfrenta desafios ambientais sérios: desmatamento da Amazônia, poluição dos rios, descarte inadequado de resíduos e dependência ainda parcial de combustíveis fósseis. Apesar de ser referência mundial em energia renovável, o país ainda tem um longo caminho pela frente — e grande parte desse caminho passa pela <strong>conscientização das pessoas</strong>.</p>
+
+    <div class="highlight-box">
+      💡 É aí que o EcoFactory City tem seu valor real: colocar você no centro de dilemas que acontecem todos os dias no Brasil.
+    </div>
+
+    <p>Ao simular as consequências das escolhas ambientais de forma prática e interativa, o jogo apresenta uma pergunta que cidades brasileiras enfrentam constantemente: <strong>lucro imediato ou sustentabilidade a longo prazo?</strong> Aceitar a fábrica poluidora parece vantajoso no curto prazo, mas a sustentabilidade despenca — exatamente como acontece quando cidades priorizam industrialização sem planejamento ambiental.</p>
+
+    <div class="divider"></div>
+
+    <p>A mecânica de <strong>separação de lixo</strong> no minigame dialoga diretamente com uma realidade nacional: o Brasil gera mais de <span class="stat-inline">🗑️ 80 milhões de toneladas</span> de resíduos sólidos por ano, mas apenas uma fração é reciclada corretamente. O jogo ensina, de forma lúdica, que separar o lixo tem consequências reais — e recompensas.</p>
+
+    <p>As opções de compra de <strong>energia solar, eólica e filtros de água</strong> refletem soluções que já existem e crescem no Brasil. O país é um dos maiores produtores de energia eólica e solar do mundo, e jogos que normalizam essas escolhas ajudam a construir uma cultura onde sustentabilidade não é sacrifício, mas <strong>estratégia inteligente</strong>.</p>
+
+    <div class="highlight-box">
+      🌍 Jogar é aprender sem perceber. No contexto brasileiro, onde a educação ambiental ainda é desigual e fragmentada, ferramentas como o EcoFactory City têm o potencial de plantar uma semente — assim como as árvores que você compra para salvar sua cidade.
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="buttons-col">
+    <a href="ecofactory-city.html" class="btn-primary">🌱 Começar o Jogo!</a>
+    <a href="#" onclick="history.back(); return false;" class="btn-back">← Voltar</a>
+  </div>
+
+  <div class="footer-note">🌿 EcoFactory City · Educação ambiental através do jogo</div>
+
+</div>
+
+<script>
+  const scene = document.getElementById('city-scene');
+
+  // Clouds
+  for (let i = 0; i < 6; i++) {
+    const c = document.createElement('div');
+    c.className = 'cloud';
+    const size = 50 + Math.random() * 90;
+    c.style.cssText = `width:${size}px;height:${size*0.6}px;top:${4+Math.random()*35}%;animation-duration:${22+Math.random()*28}s;animation-delay:${-Math.random()*40}s;`;
+    scene.appendChild(c);
+  }
+
+  // Buildings
+  const bPos =   [3,  12, 20, 30, 42, 52, 61, 70, 80, 90];
+  const bHeight = [70, 110,90, 140,85, 120,100,95, 130,75];
+  const bWidth =  [38, 34, 48, 36, 44, 38, 34, 46, 40, 36];
+  bPos.forEach((pos, i) => {
+    const b = document.createElement('div');
+    b.className = 'city-building';
+    b.style.cssText = `left:${pos}%;width:${bWidth[i]}px;height:${bHeight[i]}px;`;
+    for (let row = 0; row < Math.floor(bHeight[i]/22); row++) {
+      for (let col = 0; col < 2; col++) {
+        const win = document.createElement('div');
+        win.style.cssText = `position:absolute;width:8px;height:8px;background:${Math.random()>0.3?'#fde68a':'#7dd3fc'};border-radius:1px;left:${7+col*14}px;top:${8+row*20}px;`;
+        b.appendChild(win);
+      }
+    }
+    scene.appendChild(b);
+  });
+
+  // Trees
+  const treePos = [7, 17, 26, 38, 49, 58, 68, 77, 86, 95];
+  treePos.forEach((pos, i) => {
+    const t = document.createElement('div');
+    t.className = 'tree-deco';
+    t.textContent = ['🌳','🌲','🌴'][i % 3];
+    t.style.cssText = `left:${pos}%;bottom:${1+Math.random()*2}%;animation-delay:${Math.random()*4}s;font-size:${2+Math.random()*1}em;`;
+    scene.appendChild(t);
+  });
+</script>
+</body>
+</html>
+
