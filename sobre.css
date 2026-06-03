@@ -43,9 +43,15 @@ header {
     justify-content: center;
     align-items: center;
     text-shadow: #081b16 1px 1px 4px;
-    color: rgba(107, 246, 124, 0.776);
+    color: rgba(17, 156, 34, 0.776);
     font-size: 2.5rem;
+    text-shadow:
+    3px 3px 1px #ffffff,
+    -3px 3px 1px #ffffff,
+    -3px -3px 1px #ffffff,
+    3px -3px 1px #ffffff;
 }
+
 .titulo:hover{
     transition: 0.2s;
     transform: scale(1.5);
@@ -93,6 +99,10 @@ header {
     align-items: center;
 }
 
+body{
+    background: linear-gradient( 360deg, rgb(8, 60, 80) 0%, rgb(145, 189, 206) 91%, rgb(255, 255, 255) 100%);
+}
+
 table{
     display: flex;
     justify-content: space-around;
@@ -105,10 +115,11 @@ table{
 td{
     box-shadow: 2px 2px 40px #000000;
     padding:40px;
+    background-color: rgba(190, 226, 243, 0.795);
 }
 h4{
     color: rgb(14, 53, 0);
-    font-size: 1rem;
+    font-size: 1.25rem;
 }
 
 .balao-meio{
@@ -122,7 +133,7 @@ h4{
 
 h6{
     color: rgb(15, 15, 15);
-    font-size: 0.5rem;
+    font-size: 0.75rem;
 }
 
 .conteudo-balao{
@@ -131,7 +142,7 @@ h6{
     justify-content: space-between;
     align-items: center;
     text-shadow: #ffffff 1px 1px 10px;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 td:hover{
     background-color: rgba(79, 178, 91, 0.452);

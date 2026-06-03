@@ -43,9 +43,15 @@ header {
     justify-content: center;
     align-items: center;
     text-shadow: #081b16 1px 1px 4px;
-    color: rgba(107, 246, 124, 0.776);
+    color: rgba(17, 156, 34, 0.776);
     font-size: 2.5rem;
+    text-shadow:
+    3px 3px 1px #ffffff,
+    -3px 3px 1px #ffffff,
+    -3px -3px 1px #ffffff,
+    3px -3px 1px #ffffff;
 }
+
 .titulo:hover{
     transition: 0.2s;
     transform: scale(1.5);
@@ -122,28 +128,39 @@ ul.jogo li {
 }
 
 body{
-    background: #2A7B9B;
-    background: linear-gradient(359deg, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 91%, rgba(237, 221, 83, 1) 100%);
+    background: linear-gradient( 360deg, rgb(8, 60, 80) 0%, rgb(145, 189, 206) 91%, rgb(255, 255, 255) 100%);
 }
 
 .gameimage {
     width: 300px;
     height: 200px;
-    border-radius: 20px;
-    box-shadow: #464646 5px 3px 10px;
+    border-radius: none;
+    box-shadow: #000000 5px 3px 20px;
+    border-color: aliceblue;
+    border-style: outset;
 }
 
 .gameimage:hover {
     transform: scale(1.05);
     transition: 0.2s;
+    border-color: #38ff7a;
+    border-style: outset;
+    box-shadow: #000000 5px 3px 20px;
 }
+
+.titulo-jogo{
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #000;
+}
+
 
 h3 {
     margin-top: 5px;
-    color: rgb(0, 0, 0);
-    text-shadow: #464646 1px 1px 2px;
+    color: #76ffa4;
+    text-shadow: #000000 1px 1px 2px;
     text-align: center;
     font-family: Minecraft, Impact, 'Arial Narrow Bold', sans-serif;
+    font-size: 25px;
 }
 
 h5 {
